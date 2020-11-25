@@ -1,25 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Markdown Previewer</title>
+    <title>Drum Machine</title>
     <!-- Import Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
-    <style>
-      #editor {
-        height: 75vh;
-      }
-      .headerElem {
-        background-color: black;
-        color: white;
-        padding-top: 1%;
-        padding-bottom: 1%;
-      }
-      h1, h3 {
-        font-weight: bold;
-      }
-    </style>
+    <!-- Load custom css -->
+    <link rel="stylesheet" href="custom.css">
   </head>
-
   <body>
     <!-- Load React -->
     <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
@@ -27,87 +14,177 @@
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
     <!-- Quickly Try JSX via Babel -->
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
-    <!-- Import the Marked.js library to parse Markdown -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/1.2.5/marked.js"></script>
     <!-- Load freeCodeCamp test script -->
     <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
-    
-    <!-- React Container -->
-    <div id="react-container" class="container-fluid"></div>
+    <!-- React element with Bootstrap container class -->
+    <div id="drum-machine" class="container-fluid"></div>
+    <!-- Local JS file -->
+    <script src="main.js"></script>
     <!-- React.JS Component -->
     <script type="text/babel">
-      //Define the default input state
-      const defaultInput = `# Heading Level 1
-## Heading Level 2
-### Heading Level 3
-
-Link: [OpenFOAM](https://www.openfoam.com/)
-
-\`inline code\`
-
-\`\`\`
-//code block
-\`\`\`
-
-- List
-  - item
-
-> Block Quote
-
-![OpenFOAM Logo](https://pbs.twimg.com/profile_images/1171023226/image_400x400.png)
-
-**bold text**
-`;
       //React component
       class MyReactComponent extends React.Component {
         constructor(props) {
           super(props);
           //Load initial state
           this.state = {
-            input: defaultInput
+            key: ""
           };
-          this.handleChange = this.handleChange.bind(this);
+          this.handleDisplay = this.handleDisplay.bind(this);
+          this.handleClickQ = this.handleClickQ.bind(this);
+          this.handleClickW = this.handleClickW.bind(this);
+          this.handleClickE = this.handleClickE.bind(this);
+          this.handleClickA = this.handleClickA.bind(this);
+          this.handleClickS = this.handleClickS.bind(this);
+          this.handleClickD = this.handleClickD.bind(this);
+          this.handleClickZ = this.handleClickZ.bind(this);
+          this.handleClickX = this.handleClickX.bind(this);
+          this.handleClickC = this.handleClickC.bind(this);
         }
-        //To get input field value
-        handleChange = (event) => {
+        handleDisplay(e){
+          // Get the Unicode value
+          let pressedKey = e.keyCode;
+          // Convert the value into a character
+          keyDisp = String.fromCharCode(pressedKey);
+          // Set current state to string value of the key pressed
           this.setState({
-            input: event.target.value
+            key: keyDisp
+          });
+          // Play audio depending on the key pressed
+          if (keyDisp === "Q") {
+            return playAudioQ();
+          } else if (keyDisp === "W") {
+            return playAudioW();
+          } else if (keyDisp === "E") {
+            return playAudioE();
+          } else if (keyDisp === "A") {
+            return playAudioA();
+          } else if (keyDisp === "S") {
+            return playAudioS();
+          } else if (keyDisp === "D") {
+            return playAudioD();
+          } else if (keyDisp === "Z") {
+            return playAudioZ();
+          } else if (keyDisp === "X") {
+            return playAudioX();
+          } else if (keyDisp === "C") {
+            return playAudioC();
+          }
+        }
+        handleClickQ(){
+          playAudioQ();
+          this.setState({
+            key: keyDisp
+          });
+        }
+        handleClickW(){
+          playAudioW();
+          this.setState({
+            key: keyDisp
+          });
+        }
+        handleClickE(){
+          playAudioE();
+          this.setState({
+            key: keyDisp
+          });
+        }
+        handleClickA(){
+          playAudioA();
+          this.setState({
+            key: keyDisp
+          });
+        }
+        handleClickS(){
+          playAudioS();
+          this.setState({
+            key: keyDisp
+          });
+        }
+        handleClickD(){
+          playAudioD();
+          this.setState({
+            key: keyDisp
+          });
+        }
+        handleClickZ(){
+          playAudioZ();
+          this.setState({
+            key: keyDisp
+          });
+        }
+        handleClickX(){
+          playAudioX();
+          this.setState({
+            key: keyDisp
+          });
+        }
+        handleClickC(){
+          playAudioC();
+          this.setState({
+            key: keyDisp
           });
         }
         render() {
-          //If true, add <br> on a single line break (copies GitHub behavior on comments, but not on rendered markdown files). Requires gfm be true.
-          let markdownPrev = marked(this.state.input, {breaks: true});
-          //dangerouslySetInnerHTML is React’s replacement for using innerHTML in the browser DOM
-          const createMarkup = () => {
-            return {
-              __html: markdownPrev
-            };
-          }
           return (
-            <div>
-              <div className="row text-center headerElem">
-                <h1>Markdown Previewer</h1>
-              </div>
-              <div className="row">
-                <div className="col-md-6">
-                  <h3>Markdown Editor</h3>
-                  <p>Replace the default text below and observe the output</p>
-                  <textarea id="editor" className="form-control p-1" value={this.state.input} onChange={this.handleChange}>
-                    {defaultInput}
-                  </textarea>
-                </div>
-                <div className="col-md-6">
-                  <h3>Output</h3>
-                  <p>The text is rendered as HTML below</p>
-                  <div id="preview" className="" dangerouslySetInnerHTML={createMarkup()}>
+            <div onKeyDown={this.handleDisplay}>
+              <div id="display" className="row customClassMain">
+                <div className="col-md-2"></div>
+                <div className="col-md-8 text-center">
+                  <h1>Drum Machine</h1>
+                  <br/>
+                  <h4>Press one of the following keys to play</h4>
+                  <div className="btn-group-lg btn-group-horizontal">
+                    <button id="drum-pad-Q" className="drum-pad btn btn-default btn-lg" onClick={this.handleClickQ}>
+                      <audio id="Q" className="clip" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3"></audio>
+                      Q
+                      </button>
+                    <button id="drum-pad-W" className="drum-pad btn btn-default btn-lg" onClick={this.handleClickW}>
+                      <audio id="W" className="clip" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3"></audio>
+                      W
+                    </button>
+                    <button id="drum-pad-E" className="drum-pad btn btn-default btn-lg" onClick={this.handleClickE}>
+                      <audio id="E" className="clip" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3"></audio>
+                      E
+                    </button>
                   </div>
+                  <div className="btn-group-lg btn-group-horizontal">
+                    <button id="drum-pad-A" className="drum-pad btn btn-default btn-lg" onClick={this.handleClickA}>
+                      <audio id="A" className="clip" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3"></audio>
+                      A
+                    </button>
+                    <button id="drum-pad-S" className="drum-pad btn btn-default btn-lg" onClick={this.handleClickS}>
+                      <audio id="S" className="clip" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3"></audio>
+                      S
+                    </button>
+                    <button id="drum-pad-D" className="drum-pad btn btn-default btn-lg" onClick={this.handleClickD}>
+                      <audio id="D" className="clip" src="https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3"></audio>
+                      D
+                    </button>
+                  </div>
+                  <div className="btn-group-lg btn-group-horizontal">
+                    <button id="drum-pad-Z" className="drum-pad btn btn-default btn-lg" onClick={this.handleClickZ}>
+                      <audio id="Z" className="clip" src="https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3"></audio>
+                      Z
+                    </button>
+                    <button id="drum-pad-X" className="drum-pad btn btn-default btn-lg" onClick={this.handleClickX}>
+                      <audio id="X" className="clip" src="https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3"></audio>
+                      X
+                    </button>
+                    <button id="drum-pad-C" className="drum-pad btn btn-default btn-lg" onClick={this.handleClickC}>
+                      <audio id="C" className="clip" src="https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3"></audio>
+                      C
+                    </button>
+                  </div>
+                  <p>Key pressed: {this.state.key}</p>
                 </div>
+                <div className="col-md-2"></div>
               </div>
             </div>
           );
         }
       };
-      ReactDOM.render(<MyReactComponent/>, document.getElementById('react-container'))
+      ReactDOM.render(<MyReactComponent/>, document.getElementById("drum-machine"))
     </script>
   </body>
 </html>
